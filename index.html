@@ -3,24 +3,36 @@
 <head>
 	<title>JavaScript Cleaner</title>
 	<script>
-
-		
+	
 		function init()
 		{
 			textField=document.getElementById("inputText");
 			var text=textField.value;
+			text=process(text);
 			text=text.replace(/\r?\n|\r/g,'');
-			//text=processSpaces(text);
 			text=insertTabs(preProcess(text));
 			textField.value=text;
-			test="dfadfdfasd'asdfadsf";
-			alert(test.indexOf("'"));
-			test='asdfadsf"sadfadsf';
-			alert(test.indexOf('"'));
 		}
 
-		function processSpaces(text)
+		function process(text)
 		{
+			temp="";
+			inside=false;
+			for(i=0;i<text.length;i++)
+			{
+				if(text[i]=="'" || text[i]=='"')
+				{
+					inside=inside==true?false:true;
+				}
+				if(text[i]!=" ")
+				{
+					temp+=text[i];
+				}else if(inside)
+				{
+					temp+=text[i];
+				}
+			}
+			return temp;
 		}
 
 
