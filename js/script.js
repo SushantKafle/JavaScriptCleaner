@@ -4,14 +4,15 @@
 			//Read the input Text Feild
 			textField=document.getElementById("inputText");
 			var text=textField.value;
-
+			
 			//Filter the necessary spaces
-			text=process(text);
+			text=text.replace(/ {2,}/g,' ');
 
 			//Removes the new line
-			text=text.replace(/\r?\n|\r/g,'');
+			text=text.replace(/\r?\n{2,}|\r{2,}/g,'\n');
 
-			/*The major process is divided into two main steps:
+			/*
+			The major process is divided into two main steps:
 				1. Insert Appropriate Newline or Line Breaks
 				2. Insert Appropriate Tabs
 			*/
@@ -22,9 +23,10 @@
 		}
 
 		//Clear the Spaces, could have been done using Regex as well
-		// string.replace(/ /g,"")
+		// string.replace(/ /g," ")
 		function process(text)
 		{
+			/*	
 			temp="";
 			inside=false;
 			for(i=0;i<text.length;i++)
@@ -43,7 +45,8 @@
 					temp+=text[i];
 				}
 			}
-			return temp;
+			return temp;*/
+			return text.trim();
 		}
 
 		//Lazy Programming :)
