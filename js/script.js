@@ -4,51 +4,75 @@
 			//Read the input Text Feild
 			textField=document.getElementById("inputText");
 			var text=textField.value;
-			
-			//Filter the necessary spaces
-			text=text.replace(/ {2,}/g,' ');
-
-			//Removes the new line
-			text=text.replace(/\r?\n{2,}|\r{2,}/g,'\n');
 
 			/*
 			The major process is divided into two main steps:
 				1. Insert Appropriate Newline or Line Breaks
 				2. Insert Appropriate Tabs
 			*/
-			text=insertTabs(preProcess(text));
+
+			//Insert required Line breaks
+			text=(preProcess(text));
+
+			//Filter the necessary spaces
+			text =clearSpaces(text);
+
+			//Remove unwanted linebreaks
+			text=text.replace(/\r?\n{2,}|\r{2,}/g,'\n');
+
+			//Insert appropriate Tabs
+			text=insertTabs(text);
 
 			//Set the value to the text Field
 			textField.value=text;
 		}
 
-		//Clear the Spaces, could have been done using Regex as well
-		// string.replace(/ /g," ")
-		function process(text)
+		//Filter certain spaces
+		function myTrimmer(text)
 		{
-			/*	
-			temp="";
-			inside=false;
+			test="";
+			singleQInside=false;
+			doubleQInside=false;
+
 			for(i=0;i<text.length;i++)
 			{
-				//Checking for string values, they should not be modified
-				//example alert("my string");
-				if(text[i]=="'" || text[i]=='"')
+				if(text[i]=='"')
+					doubleQInside=doubleQInside==true?false:true;
+				if(text[i]=="'")
+					singleQInside=singleQInside==true?false:true;
+
+				if(text[i]!=' ' || doubleQInside || singleQInside )
 				{
-					inside=inside==true?false:true;
-				}
-				if(text[i]!=" ")
-				{
-					temp+=text[i];
-				}else if(inside)
-				{
-					temp+=text[i];
+					test+=text[i];
 				}
 			}
-			return temp;*/
-			return text.trim();
+			return test;
 		}
 
+		//Clear unwanted Spaces
+		function clearSpaces(text)
+		{
+			temp="";
+			while(true)
+			{
+				index=text.indexOf('\n');
+
+				if(index == -1)
+					break;
+
+				substr=text.substring(0,index+1).trim();
+
+				if(substr.indexOf("'")!=-1 || substr.indexOf('"')!=-1)
+					temp+=myTrimmer(substr)+"\n";
+				else
+					temp+=substr.replace(/ {2,}/g," ")+"\n";
+
+				text=text.substring(text.indexOf('\n')+1,text.length);
+			}
+			return temp;
+		}
+
+		
 		//Lazy Programming :)
 		function getMin(x,y,z)
 		{
@@ -91,12 +115,6 @@
 			}
 
 			return tab;
-		}
-
-
-		function processSpaces(text)
-		{
-				text.replace(/ /g,"");
 		}
 
 		//Responsible to insert the required amount to tabs
