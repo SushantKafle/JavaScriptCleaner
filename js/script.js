@@ -20,6 +20,8 @@
 			//Remove unwanted linebreaks
 			text=text.replace(/\r?\n{2,}|\r{2,}/g,'\n');
 
+			text=midProcess(text);
+
 			//Insert appropriate Tabs
 			text=insertTabs(text);
 
@@ -131,7 +133,7 @@
 				pos=value[1]+1;
 				sym=value[0][pos-2];
 				
-				if(sym == "}")
+				if(sym == "}" || (sym == ";" && value[0][pos-3] =="}" ))
 					indent-=1;
 
 				finalTex+=getIndent(indent)+value[0];
@@ -144,6 +146,32 @@
 			return finalTex;
 		}
 
+		//Other advacements can be added here
+		function midProcess(text)
+		{
+			postText="";
+			while(true)
+			{
+				eindex=text.indexOf("}");
+
+				//for now
+				if(eindex==-1)
+					break;
+
+				if(eindex < (text.length-2) && text[eindex+2]==";")
+				{
+					postText+=text.substring(0,eindex)+"};";
+					if(eindex+3 >= text.length)
+						text="";
+					else
+						text=text.substring(eindex+3,text.length);
+				}
+			
+			}
+
+			return postText+text;
+		}
+
 		function preProcess(text)
 		{
 			postText="";
@@ -152,10 +180,12 @@
 				sindex=text.indexOf(";");
 				bindex=text.indexOf("{");
 				eindex=text.indexOf("}");
+
 				if(sindex==-1 && bindex==-1 && eindex == -1)
 					break;
 
 				index=getMin(sindex,bindex,eindex);
+					
 				temp=text.substring(0,index+1);
 				if(eindex==index && temp.length > 1)
 					postText+=text.substring(0,index)+"\n"+"}"+"\n";
