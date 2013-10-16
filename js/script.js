@@ -20,7 +20,7 @@
 			//Remove unwanted linebreaks
 			text=text.replace(/\r?\n{2,}|\r{2,}/g,'\n');
 
-			//text=midProcess(text);
+			text=midProcess(text);
 
 			//Insert appropriate Tabs
 			text=insertTabs(text);
@@ -165,12 +165,17 @@
 						text="";
 					else
 						text=text.substring(eindex+3,text.length);
+				}else
+				{
+					postText+=text.substring(0,eindex+1);
+					text=text.substring(eindex+1,text.length);
 				}
 			
 			}
 
 			return postText+text;
 		}
+		
 
 		function preProcess(text)
 		{
