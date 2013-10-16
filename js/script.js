@@ -23,7 +23,7 @@
 			//text=midProcess(text);
 
 			//Insert appropriate Tabs
-			text=insertTabs(text);
+			//text=insertTabs(text);
 
 			//Set the value to the text Field
 			textField.value=text;
